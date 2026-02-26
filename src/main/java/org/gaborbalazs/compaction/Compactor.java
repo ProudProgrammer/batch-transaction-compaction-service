@@ -11,7 +11,7 @@ class Compactor {
         return transactionIds.stream().sorted(this::compare).toList();
     }
 
-    int compare(Integer x, Integer y) {
+    private int compare(Integer x, Integer y) {
         return (x == 0) ? 1 : ((y == 0)) ? -1 : 0;
     }
 }
