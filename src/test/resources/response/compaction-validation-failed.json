@@ -1,0 +1,6 @@
+{
+  "detail": "Transaction id list must not be empty",
+  "instance": "/api/compaction",
+  "status": 400,
+  "title": "Validation failed"
+}

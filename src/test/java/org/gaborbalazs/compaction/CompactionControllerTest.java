@@ -24,7 +24,9 @@ class CompactionControllerTest {
 
     private static final String API_COMPACTION_URL = "/api/compaction";
     private static final String REQUEST_COMPACTION_JSON = "/request/compaction.json";
+    private static final String REQUEST_COMPACTION_EMPTY_LIST_JSON = "/request/compaction-empty-list.json";
     private static final String RESPONSE_COMPACTION_JSON = "/response/compaction.json";
+    private static final String RESPONSE_COMPACTION_VALIDATION_FAILED_JSON = "/response/compaction-validation-failed.json";
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,7 +36,7 @@ class CompactionControllerTest {
     private ResourceReader resourceReader;
 
     @Test
-    void compaction() throws Exception {
+    void shouldReturn200WhenValidationSucceeded() throws Exception {
         TransactionBatch expected = objectMapper.readValue(resourceReader.read(new ClassPathResource(RESPONSE_COMPACTION_JSON)), TransactionBatch.class);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(API_COMPACTION_URL)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -44,6 +46,20 @@ class CompactionControllerTest {
         TransactionBatch result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), TransactionBatch.class);
 
         assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void shouldReturn400WhenValidationFailed() throws Exception {
+        TransactionBatch expected = objectMapper.readValue(resourceReader.read(new ClassPathResource(RESPONSE_COMPACTION_VALIDATION_FAILED_JSON)), TransactionBatch.class);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(API_COMPACTION_URL)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(resourceReader.read(new ClassPathResource(REQUEST_COMPACTION_EMPTY_LIST_JSON)));
+
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        TransactionBatch result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), TransactionBatch.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
         assertEquals(expected, result);
     }
 }
