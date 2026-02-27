@@ -30,3 +30,12 @@ Request Body:
 Response:
 [1045, 2099, 3301, 0, 0]
 ```
+
+### NFRs
+
+- Unit Tests
+- Integration Tests
+- API doc
+- Validation
+- Error Handling
+- Rate Limiter
