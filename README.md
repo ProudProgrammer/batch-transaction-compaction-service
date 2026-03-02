@@ -38,4 +38,6 @@ Response:
 - API doc
 - Validation
 - Error Handling
+- Logger
+- Cache
 - Rate Limiter

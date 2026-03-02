@@ -19,8 +19,10 @@
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <openapi.starter.version>3.0.1</openapi.starter.version>
+        <springdoc-openapi-starter.version>3.0.1</springdoc-openapi-starter.version>
         <lombok.version>1.18.42</lombok.version>
+        <spring-boot-starter-cache.version>4.1.0-M2</spring-boot-starter-cache.version>
+        <caffeine.version>3.2.3</caffeine.version>
     </properties>
 
     <dependencies>
@@ -42,8 +44,17 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${openapi.starter.version}</version>
-            <scope>compile</scope>
+            <version>${springdoc-openapi-starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>${spring-boot-starter-cache.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
         </dependency>
     </dependencies>
 
