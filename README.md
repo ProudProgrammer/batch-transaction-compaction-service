@@ -40,4 +40,12 @@ Response:
 - Error Handling
 - Logger
 - Cache
+- Actuator
 - Rate Limiter
+
+### Technical Endpoints
+
+```
+http://localhost:8080/actuator/health
+http://localhost:8080/swagger-ui/index.html
+```
