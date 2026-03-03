@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Collections;
@@ -21,6 +22,7 @@ class CompactionServiceTest {
     private CompactionService underTest;
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void compactorCompressShouldBeCalledOnceWhenCacheIsEnabled() {
         TransactionBatch transactionBatch = new TransactionBatch(Collections.singletonList(1));
 
