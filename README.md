@@ -41,6 +41,7 @@ Response:
 - Logger
 - Cache
 - Actuator
+- Security
 - Rate Limiter
 
 ### Technical Endpoints

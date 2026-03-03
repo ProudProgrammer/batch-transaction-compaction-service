@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,6 +25,8 @@ class CompactionControllerTest {
     private static final String REQUEST_COMPACTION_EMPTY_LIST_JSON = "/request/compaction-empty-list.json";
     private static final String RESPONSE_COMPACTION_JSON = "/response/compaction.json";
     private static final String RESPONSE_COMPACTION_VALIDATION_FAILED_JSON = "/response/compaction-validation-failed.json";
+    private static final String USER = "user";
+    private static final String PASSWORD = "password";
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,9 +36,21 @@ class CompactionControllerTest {
     private ResourceReader resourceReader;
 
     @Test
-    void shouldReturn200WhenValidationSucceeded() throws Exception {
+    void shouldReturn401WhenUnauthorized() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(API_COMPACTION_URL)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(resourceReader.read(new ClassPathResource(REQUEST_COMPACTION_JSON)));
+
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    void shouldReturn200WhenAuthorizedAndValidationSucceeded() throws Exception {
         TransactionBatch expected = objectMapper.readValue(resourceReader.read(new ClassPathResource(RESPONSE_COMPACTION_JSON)), TransactionBatch.class);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(API_COMPACTION_URL)
+                .with(httpBasic(USER, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(resourceReader.read(new ClassPathResource(REQUEST_COMPACTION_JSON)));
 
@@ -47,9 +62,10 @@ class CompactionControllerTest {
     }
 
     @Test
-    void shouldReturn400WhenValidationFailed() throws Exception {
+    void shouldReturn400WhenAuthorizedAndValidationFailed() throws Exception {
         TransactionBatch expected = objectMapper.readValue(resourceReader.read(new ClassPathResource(RESPONSE_COMPACTION_VALIDATION_FAILED_JSON)), TransactionBatch.class);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(API_COMPACTION_URL)
+                .with(httpBasic(USER, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(resourceReader.read(new ClassPathResource(REQUEST_COMPACTION_EMPTY_LIST_JSON)));
 
