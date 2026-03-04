@@ -42,7 +42,7 @@ Response:
 - Cache
 - Actuator
 - Security (with separated authentication and authorization logic)
-- Rate Limiter
+- Rate Limiter (with cache)
 
 ### Technical Endpoints
 
