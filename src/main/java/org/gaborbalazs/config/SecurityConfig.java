@@ -31,6 +31,7 @@ class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/graphql", "/graphiql", "/swagger-ui/**", "/v3/**").permitAll()
                         .requestMatchers("/api/**").authenticated())
                 .httpBasic(Customizer.withDefaults());
         return http.build();

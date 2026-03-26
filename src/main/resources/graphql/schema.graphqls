@@ -1,0 +1,9 @@
+type Query {
+    transactionInfoById(id: ID!): TransactionInfo
+}
+
+type TransactionInfo {
+    id: ID
+    name: String
+    description: String
+}
