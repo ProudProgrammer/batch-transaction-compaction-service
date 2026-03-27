@@ -15,6 +15,9 @@ spring:
   graphql:
     graphiql:
       enabled: true
+  threads:
+    virtual:
+      enabled: true
 
 rate-limit:
   capacity: 10
